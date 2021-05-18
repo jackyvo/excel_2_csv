@@ -1,0 +1,7 @@
+date,time,item_id,item_description,fine_category,store_map_id,sold_price,sold_quantity
+2019-01-03,10:37:07,100,Schnittbrötchen,Brötchen,25,3.00,10.0
+2019-01-02,11:24:18,100,Schnittbrötchen,Brötchen,25,15.00,50.0
+2019-01-02,,111,Sesambrötchen,Brötchen,25,0.00,0.0
+2019-01-03,10:24:01,100,Schnittbrötchen,Brötchen,25,3.33,11.0
+2019-01-04,9:08:21,100,Schnittbrötchen,Brötchen,25,1.65,5.0
+2020-12-31,,160,Urkruste 750g,Brot,25,0.00,0.0
