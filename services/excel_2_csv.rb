@@ -55,19 +55,36 @@ class Excel2CSV
   def export
     # tranactions.csv
     tranactions_header = %i(date time item_id item_description fine_category store_map_id sold_price sold_quantity)
-    write_to_csv('transactions.csv', tranactions_header, @verkaufsdaten_rows)
+    rows = get_rows(tranactions_header, @verkaufsdaten_rows)
+    write_to_csv('transactions.csv', rows, tranactions_header)
+
+    # return.csv
+    tranactions_header = %i(date item_id item_description fine_category store_map_id waste_quantity)
+    rows = @verkaufsdaten_rows.select do |row|
+      row[:waste_quantity].to_f > 0
+    end.uniq { |row| row.first }
+
+    rows = get_rows(tranactions_header, rows)
+    write_to_csv('return.csv', rows, tranactions_header)
 
     # delivered.csv
     delivered_header = %i(item_id item_description delivered_quantity store_map_id date)
-    write_to_csv('delivered.csv', delivered_header, @lieferdaten_rows, "%y-%m-%d")
+    rows = get_rows(delivered_header, @lieferdaten_rows, "%y-%m-%d")
+    write_to_csv('delivered.csv', rows, delivered_header)
   end
 
-  def write_to_csv(file, header, rows, date_format=nil)
+  def get_rows(header, rows, date_format=nil)
+    rows.map do |row|
+      header.map { |key| formart_value(row[key], key, date_format) }
+    end 
+  end
+
+  def write_to_csv(file, rows, headers)
     CSV.open("data/output/#{file}", "w") do |csv|
-      csv << header
+      csv << headers
 
       rows.each do |row|
-        csv << header.map { |key| formart_value(row[key], key, date_format) }
+        csv << row
       end
     end
   end

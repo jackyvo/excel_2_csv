@@ -1,0 +1,5 @@
+date,item_id,item_description,fine_category,store_map_id,waste_quantity
+2019-01-03,100,Schnittbrötchen,Brötchen,25,122.0
+2019-01-02,111,Sesambrötchen,Brötchen,25,1.0
+2019-01-04,100,Schnittbrötchen,Brötchen,25,153.0
+2020-12-31,160,Urkruste 750g,Brot,25,4.0

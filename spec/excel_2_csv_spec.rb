@@ -12,6 +12,11 @@ describe 'Excel2CSV' do
 	  	epexct_data_output file
 	  end
 
+	  it 'exports data to return.csv' do
+	  	file = "return.csv"
+	  	epexct_data_output file
+	  end
+
 	  it 'exports data to delivered.csv' do
 	  	file = "delivered.csv"
 	  	epexct_data_output file
