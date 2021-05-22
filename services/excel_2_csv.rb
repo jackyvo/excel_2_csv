@@ -89,9 +89,9 @@ class Excel2CSV
 
   def get_rows(header, rows, date_format=nil)
     rows.map do |row|
-      header.map { |key|
+      header.map do |key|
         formart_value(row[key], key, date_format) 
-      }
+      end
     end 
   end
 
