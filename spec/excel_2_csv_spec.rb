@@ -21,6 +21,11 @@ describe 'Excel2CSV' do
 	  	file = "delivered.csv"
 	  	epexct_data_output file
 	  end
+
+	  it 'exports data to products.csv' do
+	  	file = "products.csv"
+	  	epexct_data_output file
+	  end
 	end
 
 	def epexct_data_output file

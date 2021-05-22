@@ -36,12 +36,11 @@ class Excel2CSV
       "geliefert PE" => :delivered_quantity,
       "BäckereiNr" => :store_map_id,
       "Ebene 1\nLieferdatum" => :date,
-      "Bezeichnung" => :item_description,
+      "Bezeichnung" => [:name, :item_description],
       "Mindestbestellmenge Lieferartikel" => :minimum_order
     }.invert
 
     format_mapping!(lieferdaten_sheet_mapping)
-
 
     # Verkaufsdaten
     sheet = xlsx.sheet('Verkaufsdaten')
@@ -71,11 +70,28 @@ class Excel2CSV
     delivered_header = %i(item_id item_description delivered_quantity store_map_id date)
     rows = get_rows(delivered_header, @lieferdaten_rows, "%y-%m-%d")
     write_to_csv('delivered.csv', rows, delivered_header)
+
+    # products.csv
+    items = {}
+    product_header = %i(name product_category.name item_id minimum_order)
+
+    (@verkaufsdaten_rows + @lieferdaten_rows).each do |row|
+      item_id = row[:item_id].to_i
+      items[item_id] ||= {}
+      row.each do |key, value|
+        items[item_id][key] = value
+      end
+    end
+
+    rows = get_rows(product_header, items.values)
+    write_to_csv('products.csv', rows, product_header)
   end
 
   def get_rows(header, rows, date_format=nil)
     rows.map do |row|
-      header.map { |key| formart_value(row[key], key, date_format) }
+      header.map { |key|
+        formart_value(row[key], key, date_format) 
+      }
     end 
   end
 
@@ -101,7 +117,7 @@ class Excel2CSV
       '%.2f' % value
     when :sold_quantity
       '%.1f' % value
-    when :item_description
+    when :item_description, :name
       value.gsub(/^\d+\s/, '')
     end
 
